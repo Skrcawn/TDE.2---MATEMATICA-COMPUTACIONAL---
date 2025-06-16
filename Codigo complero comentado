@@ -1,0 +1,152 @@
+# Bibliotecas
+import time  # Usada para criar o efeito de digitação
+import sys   # Usada para imprimir os caracteres um a um sem quebra de linha
+
+# Função que simula o efeito de digitação letra por letra no terminal
+def efeito_digitacao(texto, atraso=0.05):
+    for caractere in texto:
+        sys.stdout.write(caractere)  # Imprime um caractere sem pular linha
+        sys.stdout.flush()           # Força a exibição imediata do caractere
+        time.sleep(atraso)           # Espera alguns milissegundos entre os caracteres
+    print()  # Quebra de linha ao final do texto
+
+# Função que exibe o nome do programa com efeito de digitação
+def exibir_cabecalho():
+    print("\n")  # Linha em branco
+    efeito_digitacao("> MathTrix <", atraso=0.1)  # Nome do programa
+    print()  # Outra linha em branco
+
+# Função principal que executa o menu do programa
+def main():
+    continuar = True  # Controla se o menu deve continuar aparecendo
+    while continuar:
+        exibir_cabecalho()  # Mostra o cabeçalho 
+
+        # Exibe o menu de opções
+        print("O que vamos calcular hoje?")
+        print("1. Permutações / Combinações")
+        print("2. Princípio das Casas de Pombo")
+        print("3. Probabilidade Condicional")
+        print("4. Relações de Recorrência")
+        print("5. Análise Estatística")
+        print("0. Sair")
+
+        # Recebe a opção escolhida pelo usuário
+        opcao = input("Digite sua opção: ")
+
+        # Verifica qual opção foi escolhida e chama a função correspondente
+        if opcao == "1":
+            combinatoria()
+        elif opcao == "2":
+            casas_de_pombo()
+        elif opcao == "3":
+            probabilidade_condicional()
+        elif opcao == "4":
+            relacoes_de_recorrencia()
+        elif opcao == "5":
+            estatistica()
+        elif opcao == "0":
+            print("\nEncerrando o programa...")
+            break  # Sai do loop e encerra o programa
+        else:
+            print("Opção inválida. Tente novamente.")
+            continue  # Volta ao menu
+
+        # Após realizar uma operação, pergunta se o usuário deseja continuar
+        resposta = input("\nAperte ENTER para fazer outra operação ou qualquer tecla para sair: ")
+        if resposta.strip() != "":
+            print("\nEncerrando o programa...")
+            continuar = False  # Sai do loop principal
+
+# Função que calcula o fatorial de um número
+def fatorial(n):
+    resultado = 1
+    for i in range(2, n + 1):
+        resultado *= i  # Multiplica todos os números de 2 até n
+    return resultado
+
+# Função que calcula a permutação e a combinação de um conjunto
+def combinatoria():
+    print("\nPermutações / Combinações")
+    n = int(input("Valor de n (total de elementos): "))  # Total de elementos
+    k = int(input("Valor de k (escolhidos): "))  # Elementos escolhidos
+
+    # Calcula a permutação: P(n) = n!
+    perm = fatorial(n)
+
+    # Calcula a combinação: C(n, k) = n! / (k!(n-k)!)
+    comb = fatorial(n) // (fatorial(k) * fatorial(n - k))
+
+    # Exibe os resultados
+    print(f"\nPermutação P({n}) = {perm}")
+    print(f"Combinação C({n},{k}) = {comb}")
+
+# Função que aplica o Princípio das Casas de Pombo
+def casas_de_pombo():
+    print("\n--- Princípio das Casas de Pombo ")
+    pombos = int(input("Quantidade de pombos (itens): "))  # Itens a distribuir
+    casas = int(input("Quantidade de casas (grupos): "))   # Grupos onde serão distribuídos
+
+    # Verifica se há mais pombos do que casas
+    if pombos > casas:
+        print("→ Pelo menos uma casa vai ter mais de um pombo (item).")
+    else:
+        print("→ Dá pra colocar todos os pombos sem repetir casa (grupo).")
+
+# Função que calcula probabilidade condicional
+def probabilidade_condicional():
+    print("\nProbabilidade Condicional")
+    intersec = float(input("Informe P(A ∩ B): "))  # Probabilidade da interseção
+    prob_b = float(input("Informe P(B): "))        # Probabilidade de B
+
+    # Evita divisão por zero
+    if prob_b == 0:
+        print("Impossível dividir por zero. Verifique os dados.")
+    else:
+        # Calcula P(A | B) = P(A ∩ B) / P(B)
+        resultado = intersec / prob_b
+        print(f"→ P(A | B) = {resultado:.4f}")
+
+# Função recursiva que calcula um termo da sequência de Fibonacci
+def fibonacci(n):
+    if n <= 1:
+        return n
+    # Regra de recorrência: F(n) = F(n-1) + F(n-2)
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# Função que usa Fibonacci para representar uma relação de recorrência
+def relacoes_de_recorrencia():
+
+    print("\nRelações de Recorrência (Fibonacci)")
+    termo = int(input("Qual termo da sequência você quer ver? "))
+    resultado = fibonacci(termo)
+    print(f"→ F({termo}) = {resultado}")
+
+# Função que calcula média, variância e desvio padrão de um conjunto
+def estatistica():
+    print("\nAnálise Estatística")
+    entrada = input("Digite os números separados por espaço (ex: 2 3 4 5): ")
+    
+    # Converte os valores digitados em uma lista de números
+    dados = [float(x) for x in entrada.split()]
+
+    n = len(dados)  # Total de elementos
+    media = sum(dados) / n  # Média aritmética
+
+
+    # Variância: soma dos quadrados das diferenças entre cada valor e a média
+    variancia = sum((x - media) ** 2 for x in dados) / n
+
+    # Desvio padrão: raiz quadrada da variância
+    desvio_padrao = variancia ** 0.5
+
+
+    # Exibe os resultados
+    print(f"\nMédia: {media:.2f}")
+    print(f"Variância: {variancia:.2f}")
+    print(f"Desvio Padrão: {desvio_padrao:.2f}")
+
+
+
+# Inicia o programa chamando a função principal
+main()
